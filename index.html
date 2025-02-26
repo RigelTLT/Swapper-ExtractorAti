@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,32 +53,44 @@
         tempContainer.innerHTML = htmlInput;
 
         // URL изображения, которое мы ищем
-        const targetImageUrl = "https://example.com/special-image.png";
+        const targetImageUrl =
+          "https://files.ati.su/assets/shared/icons/stars/stars_svg/stars_2_-0.0.svg";
 
         // Находим все изображения в HTML
         const images = tempContainer.querySelectorAll("img");
-        let resultText = "";
+        let results = [];
 
         // Перебираем изображения
         images.forEach((img) => {
           if (img.src === targetImageUrl) {
-            // Если найдено нужное изображение, ищем связанный span
-            const span = img.closest("div").querySelector("span");
-            if (span) {
-              resultText = `Найдено изображение: ${img.src}<br>Связанный текст: ${span.innerText}`;
+            // Если найдено нужное изображение, ищем первый span в элементе с классом ci3eH-2-0-764
+            const parentDiv = img.closest("._3fhSO-2-0-764"); // Находим ближайший родительский div
+            if (parentDiv) {
+              const span = parentDiv.querySelector(".ci3eH-2-0-764 span"); // Находим первый span внутри ci3eH-2-0-764
+              if (span) {
+                results.push(
+                  `Найдено изображение: ${img.src}<br>Связанный текст: ${span.innerText}`
+                );
+              } else {
+                results.push(
+                  `Найдено изображение: ${img.src}, но span не найден.`
+                );
+              }
             } else {
-              resultText = `Найдено изображение: ${img.src}, но связанный span не найден.`;
+              results.push(
+                `Найдено изображение: ${img.src}, но родительский div не найден.`
+              );
             }
           }
         });
 
         // Если изображение не найдено
-        if (!resultText) {
-          resultText = "Изображение не найдено.";
+        if (results.length === 0) {
+          results.push("Изображение не найдено.");
         }
 
         // Выводим результат
-        document.getElementById("result").innerHTML = resultText;
+        document.getElementById("result").innerHTML = results.join("<br><br>");
       }
     </script>
   </body>
